@@ -286,9 +286,14 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
                 }
             }
 
-            for (NeuronBox nb : nodeBoxes) {
-                nb.draw(-startsx, -startsy, canvas);
+            try
+            {
+                for (NeuronBox nb : nodeBoxes)
+                {
+                    nb.draw(-startsx, -startsy, canvas);
+                }
             }
+            catch (java.util.ConcurrentModificationException e) {}
 
             canvas.restore();
         }
@@ -322,13 +327,15 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
         NeuronBox r = null;
         float max = 10000, m;
 
-        for (NeuronBox nb : nodeBoxes) {
-
-            if ((m = d(nb.getX() + nb.getWidth() / 2, nb.getY() + nb.getHeight() / 2, x, y)) < max) {
-                max = m;
-                r = nb;
-            }
+        try
+        {
+            for (NeuronBox nb : nodeBoxes) {
+                if ((m = d(nb.getX() + nb.getWidth() / 2, nb.getY() + nb.getHeight() / 2, x, y)) < max) {
+                    max = m;
+                    r = nb;
+                }
         }
+        catch (java.util.ConcurrentModificationException e) {}
         return r;
     }
 
@@ -337,16 +344,19 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
         int r = -1;
         float max = 10000, m;
 
-        for (int i=0; i<nodeBoxes.size(); i++)
+        try
         {
-        NeuronBox nb = nodeBoxes.get(i);
+            for (int i=0; i<nodeBoxes.size(); i++)
+            {
+                NeuronBox nb = nodeBoxes.get(i);
                 if ((m = d(nb.getX() + nb.getWidth() / 2, nb.getY() + nb.getHeight() / 2, x, y)) < max)
                 {
                     max = m;
                     r = i;
                 }
+            }
         }
-
+        catch (java.util.ConcurrentModificationException e) {}
         return r;
     }
 
@@ -433,10 +443,13 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
 
             if ((newnow = System.currentTimeMillis()) - now > 100) {
 
-                for (NeuronBox nb : nodeBoxes) {
-                    nb.step();
+                try
+                {
+                    for (NeuronBox nb : nodeBoxes) {
+                        nb.step();
+                    }
                 }
-
+                catch (java.util.ConcurrentModificationException e) {}
                 repaint();
 
                 now = newnow;
