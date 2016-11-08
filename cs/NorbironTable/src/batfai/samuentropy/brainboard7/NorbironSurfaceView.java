@@ -40,6 +40,7 @@
 package batfai.samuentropy.brainboard7;
 
 import android.preference.PreferenceManager;
+import java.util.*;
 
 class Nodes {
 
@@ -286,14 +287,10 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
                 }
             }
 
-            try
+            for (NeuronBox nb : new java.util.ArrayList<NeuronBox>(nodeBoxes))
             {
-                for (NeuronBox nb : nodeBoxes)
-                {
                     nb.draw(-startsx, -startsy, canvas);
-                }
             }
-            catch (java.util.ConcurrentModificationException e) {}
 
             canvas.restore();
         }
@@ -327,15 +324,13 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
         NeuronBox r = null;
         float max = 10000, m;
 
-        try
-        {
-            for (NeuronBox nb : nodeBoxes) {
+        for (NeuronBox nb : nodeBoxes) {
                 if ((m = d(nb.getX() + nb.getWidth() / 2, nb.getY() + nb.getHeight() / 2, x, y)) < max) {
                     max = m;
                     r = nb;
                 }
         }
-        catch (java.util.ConcurrentModificationException e) {}
+
         return r;
     }
 
@@ -344,8 +339,6 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
         int r = -1;
         float max = 10000, m;
 
-        try
-        {
             for (int i=0; i<nodeBoxes.size(); i++)
             {
                 NeuronBox nb = nodeBoxes.get(i);
@@ -355,8 +348,7 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
                     r = i;
                 }
             }
-        }
-        catch (java.util.ConcurrentModificationException e) {}
+
         return r;
     }
 
@@ -443,13 +435,10 @@ public class NorbironSurfaceView extends android.view.SurfaceView implements Run
 
             if ((newnow = System.currentTimeMillis()) - now > 100) {
 
-                try
-                {
-                    for (NeuronBox nb : nodeBoxes) {
-                        nb.step();
-                    }
+                for (NeuronBox nb : nodeBoxes) {
+                    nb.step();
                 }
-                catch (java.util.ConcurrentModificationException e) {}
+
                 repaint();
 
                 now = newnow;
